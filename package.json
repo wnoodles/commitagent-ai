@@ -3,12 +3,16 @@
   "displayName": "CommitAgent AI",
   "description": "Analyze Git changes with your AI provider and generate project-aware commit messages.",
   "version": "0.1.0",
-  "publisher": "commitagent-ai",
-  "license": "MIT",
-  "icon": "resources/icon.png",
-  "engines": {
-    "vscode": "^1.100.0"
-  },
+"publisher": "commitagent-ai",
+"license": "MIT",
+"icon": "resources/icon.png",
+"repository": {
+  "type": "git",
+  "url": "https://github.com/wnoodles/commitagent-ai.git"
+},
+"engines": {
+  "vscode": "^1.100.0"
+},
   "categories": [
     "SCM Providers",
     "Other"
