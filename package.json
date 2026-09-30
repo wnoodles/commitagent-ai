@@ -1,0 +1,190 @@
+{
+  "name": "commitagent-ai",
+  "displayName": "CommitAgent AI",
+  "description": "Analyze Git changes with your AI provider and generate project-aware commit messages.",
+  "version": "0.1.0",
+  "publisher": "commitagent-ai",
+  "license": "MIT",
+  "icon": "resources/icon.png",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "SCM Providers",
+    "Other"
+  ],
+  "keywords": [
+    "git",
+    "commit",
+    "ai",
+    "deepseek",
+    "kimi"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:commitAgent.generate",
+    "onCommand:commitAgent.regenerate",
+    "onCommand:commitAgent.selectProvider",
+    "onCommand:commitAgent.setApiKey",
+    "onCommand:commitAgent.setCustomHeaders",
+    "onCommand:commitAgent.testConnection"
+  ],
+  "main": "./out/src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "commitAgent.generate",
+        "title": "Generate Commit Message",
+        "category": "CommitAgent",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "commitAgent.regenerate",
+        "title": "Regenerate Commit Message",
+        "category": "CommitAgent",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "commitAgent.selectProvider",
+        "title": "Select AI Provider",
+        "category": "CommitAgent"
+      },
+      {
+        "command": "commitAgent.setApiKey",
+        "title": "Set API Key",
+        "category": "CommitAgent"
+      },
+      {
+        "command": "commitAgent.setCustomHeaders",
+        "title": "Set Custom Provider Headers",
+        "category": "CommitAgent"
+      },
+      {
+        "command": "commitAgent.testConnection",
+        "title": "Test AI Connection",
+        "category": "CommitAgent"
+      },
+      {
+        "command": "commitAgent.openSettings",
+        "title": "Open Settings",
+        "category": "CommitAgent"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "commitAgent.generate",
+          "when": "scmProvider == git",
+          "group": "navigation@10"
+        },
+        {
+          "command": "commitAgent.regenerate",
+          "when": "scmProvider == git",
+          "group": "navigation@11"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CommitAgent AI",
+      "properties": {
+        "commitAgent.provider": {
+          "type": "string",
+          "enum": ["deepseek", "kimi", "openai", "custom"],
+          "enumItemLabels": ["DeepSeek", "Kimi / Moonshot", "OpenAI", "Custom OpenAI-compatible"],
+          "default": "deepseek",
+          "scope": "window",
+          "description": "AI provider used to generate commit messages."
+        },
+        "commitAgent.baseUrl": {
+          "type": "string",
+          "default": "",
+          "scope": "window",
+          "description": "Custom API base URL. Leave empty to use the selected provider preset."
+        },
+        "commitAgent.model": {
+          "type": "string",
+          "default": "",
+          "scope": "window",
+          "description": "Model name. Leave empty to use the selected provider preset."
+        },
+        "commitAgent.diffMode": {
+          "type": "string",
+          "enum": ["stagedFirst", "stagedOnly", "allChanges"],
+          "default": "stagedFirst",
+          "scope": "resource",
+          "description": "Which Git changes are analyzed."
+        },
+        "commitAgent.rulesFile": {
+          "type": "string",
+          "default": ".commitagent-rules/commit-style.md",
+          "scope": "resource",
+          "description": "Project-relative commit rules file."
+        },
+        "commitAgent.language": {
+          "type": "string",
+          "default": "zh-CN",
+          "scope": "resource",
+          "description": "Commit message output language."
+        },
+        "commitAgent.temperature": {
+          "type": "number",
+          "default": 0.2,
+          "minimum": 0,
+          "maximum": 2,
+          "scope": "window",
+          "description": "Model temperature."
+        },
+        "commitAgent.maxDiffChars": {
+          "type": "number",
+          "default": 60000,
+          "minimum": 5000,
+          "maximum": 300000,
+          "scope": "resource",
+          "description": "Maximum total diff characters sent to AI."
+        },
+        "commitAgent.maxFileDiffChars": {
+          "type": "number",
+          "default": 12000,
+          "minimum": 1000,
+          "maximum": 100000,
+          "scope": "resource",
+          "description": "Maximum diff characters retained per file."
+        },
+        "commitAgent.requestTimeoutMs": {
+          "type": "number",
+          "default": 60000,
+          "minimum": 5000,
+          "maximum": 300000,
+          "scope": "window",
+          "description": "AI request timeout in milliseconds."
+        },
+        "commitAgent.excludePatterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "scope": "resource",
+          "description": "Additional path globs whose diff bodies are excluded."
+        },
+        "commitAgent.redactSensitiveContent": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "Redact common secrets before sending a diff."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "test": "npm run compile && node --test out/test/*.test.js",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.100.0",
+    "@vscode/vsce": "^4.0.0",
+    "typescript": "^5.8.0"
+  }
+}

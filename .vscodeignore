@@ -1,0 +1,12 @@
+.vscode/**
+.commitagent-rules/**
+src/**
+test/**
+out/test/**
+node_modules/**
+.gitignore
+tsconfig.json
+*.vsix
+*.zip
+CommitAgent-AI-VSCode-插件设计.md
+**/*.map
