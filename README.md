@@ -1,6 +1,8 @@
 # CommitAgent AI
 
-CommitAgent AI 是一个可切换 AI Provider 的 VS Code Git Commit 生成插件。它会理解当前 Git 修改，读取项目自己的提交规范，生成 Commit Message，并写入 Source Control 输入框供你确认。
+CommitAgent AI 是一个可切换 AI Provider 的 VS Code Git Commit 生成插件。
+
+它会理解当前 Git 修改，读取项目自己的提交规范，生成 Commit Message，并写入 Source Control 输入框供你确认。
 
 ## 功能
 
@@ -18,13 +20,30 @@ CommitAgent AI 是一个可切换 AI Provider 的 VS Code Git Commit 生成插�
 
 ## 安装
 
-### 安装 VSIX
+### 从 GitHub Releases 安装
 
-1. 打开 VS Code。
-2. 打开 Extensions 面板。
-3. 点击右上角 `...`。
-4. 选择 `Install from VSIX...`。
-5. 选择 `commitagent-ai-0.1.0.vsix`。
+打开：
+
+https://github.com/wnoodles/commitagent-ai/releases
+
+下载最新版：
+
+```text
+commitagent-ai-0.1.0.vsix
+```
+
+然后在 VS Code 中：
+
+1. 打开 Extensions 面板
+2. 点击右上角 `...`
+3. 选择 `Install from VSIX...`
+4. 选择下载好的 `.vsix` 文件
+
+也可以使用命令行安装：
+
+```bash
+code --install-extension commitagent-ai-0.1.0.vsix
+```
 
 ### 开发模式
 
@@ -37,7 +56,13 @@ npm run compile
 
 ## 首次配置
 
-打开命令面板，依次运行：
+打开命令面板：
+
+```text
+Ctrl + Shift + P
+```
+
+依次运行：
 
 1. `CommitAgent: Select AI Provider`
 2. `CommitAgent: Set API Key`
@@ -52,22 +77,37 @@ npm run compile
 | OpenAI | `https://api.openai.com/v1` | `gpt-5-mini` |
 | Custom | `http://localhost:11434/v1` | 用户填写 |
 
-厂商模型名称变化较快，默认值不可用时，在设置中修改 `CommitAgent: Model` 即可，无需修改代码。
+厂商模型名称变化较快，默认值不可用时，可以在设置中修改 `CommitAgent: Model`，无需修改代码。
 
 ## 使用
 
-1. 修改代码。
-2. 推荐先将准备提交的内容 Stage。
-3. 打开 Source Control。
-4. 点击标题栏的星光按钮，或运行 `CommitAgent: Generate Commit Message`。
-5. 检查自动填入的 Commit Message。
-6. 手动点击 Commit。
+1. 修改代码
+2. 推荐先将准备提交的内容 Stage
+3. 打开 Source Control
+4. 点击标题栏的星光按钮，或运行 `CommitAgent: Generate Commit Message`
+5. 检查自动填入的 Commit Message
+6. 手动点击 Commit
 
 默认 `stagedFirst` 策略：
 
-- 有 staged changes：只分析 staged。
-- 没有 staged changes：分析 unstaged。
-- 插件不会自动暂存文件。
+- 有 staged changes：只分析 staged
+- 没有 staged changes：分析 unstaged
+- 插件不会自动暂存文件
+
+简单修改示例：
+
+```text
+🐛 fix(user): 修复用户信息保存异常
+```
+
+复杂修改示例：
+
+```text
+✨ feat(order): 添加订单批量导出功能
+
+- 支持批量导出订单数据
+- 优化大数据量场景下的导出体验
+```
 
 ## 项目规范
 
@@ -91,13 +131,17 @@ npm run compile
 
 ## Custom Provider
 
-Custom Provider 适用于支持 `/chat/completions` 的接口。需要配置：
+Custom Provider 适用于支持 `/chat/completions` 的接口。
+
+需要配置：
 
 - `commitAgent.baseUrl`
 - `commitAgent.model`
-- API Key；本地 Ollama 无需密钥时可以留空
+- API Key
 
-例如 Ollama：
+本地 Ollama 无需密钥时可以留空。
+
+例如：
 
 ```json
 {
@@ -120,7 +164,20 @@ Custom Provider 适用于支持 `/chat/completions` 的接口。需要配置：
 
 ## 隐私说明
 
-生成 Commit Message 时，经过过滤和脱敏的 Git diff 会发送到你选择的 AI Provider。默认不会发送 `.env`、私钥、证书、常见凭据文件、lockfile 和构建产物的正文。自动规则不能替代人工检查，使用公司代码时请遵循公司的数据安全规定。
+生成 Commit Message 时，经过过滤和脱敏的 Git diff 会发送到你选择的 AI Provider。
+
+默认不会发送：
+
+- `.env`
+- 私钥
+- 证书
+- 常见凭据文件
+- lockfile
+- 构建产物正文
+
+API Key 使用 VS Code SecretStorage 保存。
+
+自动规则不能替代人工检查，使用公司代码时请遵循公司的数据安全规定。
 
 ## 打包
 
@@ -129,7 +186,19 @@ npm run test
 npm run package
 ```
 
-发布 Marketplace 前请修改 `package.json` 中的 `publisher`，并补充真实仓库地址、图标与发布者信息。
+执行后会生成：
+
+```text
+commitagent-ai-0.1.0.vsix
+```
+
+该文件可以用于本地安装或发布到 GitHub Releases。
+
+## Release
+
+最新版本：
+
+https://github.com/wnoodles/commitagent-ai/releases
 
 ## License
 
